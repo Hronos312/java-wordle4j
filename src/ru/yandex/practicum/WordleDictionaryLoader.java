@@ -16,15 +16,29 @@ public class WordleDictionaryLoader {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filename, StandardCharsets.UTF_8))) {
             String line;
+
             while ((line = reader.readLine()) != null) {
                 line = line.toLowerCase().replace("ё", "е").trim();
-                if (line.length() == 5) {
+
+                if (line.length() == 5 && isRussianWord(line)) {
                     words.add(line);
                 }
             }
         }
 
         return new WordleDictionary(words);
+    }
+
+    private boolean isRussianWord(String word) {
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            if (ch < 'а' || ch > 'я') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
